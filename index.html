@@ -1,87 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>?</title>
+<title>A Very Important Question</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
 <style>
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #10182a;
-    color: #ffffff;
-    text-align: center;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+  @keyframes fall {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
+}
+*{
+    box-sizing:border-box;
+}
 
-  h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-  }
+body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#10182a,#1f2d4d);
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:15px;
+}
 
-  .buttons {
-    margin-top: 20px;
-  }
+.container{
+    width:100%;
+    max-width:420px;
+    padding:20px;
+}
 
-  button {
-    background-color: white;
-    color: #ff4b5c;
-    border: none;
-    padding: 12px 29px;
-    margin: 10px;
-    font-size: 1.2em;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.3s;
-  }
+h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.6rem,6vw,2.4rem);
+    margin-bottom:12px;
+}
 
-  button:hover {
-    transform: scale(1.1);
-  }
+.subtitle{
+    font-size:clamp(0.95rem,4vw,1.1rem);
+    line-height:1.5;
+    margin-bottom:18px;
+    opacity:0.9;
+}
 
-  img {
-    width: 220px;
-    border-radius: 15px;
-    margin-top: 20px;
-    display: block;
-  }
+img{
+    width:100%;
+    max-width:260px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.buttons{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    padding:12px 20px;
+    min-width:120px;
+    font-size:1rem;
+    border-radius:12px;
+    transition:0.3s;
+    font-weight:600;
+}
+
+#yesBtn{
+    background:white;
+    color:#ff4b5c;
+}
+
+#noBtn{
+    background:#ff4b5c;
+    color:white;
+}
+
+@media (max-width:500px){
+    button{
+        width:100%;
+    }
+}
 </style>
+
 </head>
+
 <body>
 
-<h1>do u wanna be my girlfriend date? </h1>
+<div class="container">
 
-<img src="35.jpg" alt="Happy Cat">
-    
+<h1>I have a question...</h1>
+
+<p class="subtitle">
+Would you make my days a little better and be my girlfriend?
+</p>
+
+<img src="37.jpg" alt="Cute Cat">
+
 <div class="buttons">
-  <button id="yesBtn">nah icant</button>
-  <button id="noBtn">yes  ❤️</button>
+    <button id="yesBtn">Yes ❤️</button>
+    <button id="noBtn">No 😌</button>
+</div>
+
 </div>
 
 <script>
-  const noBtn = document.getElementById('noBtn');
-  const yesBtn = document.getElementById('yesBtn');
 
-  // عند الضغط على "na7reg ❤️" يكبر الزر الآخر
-  let scale = 1;
-  noBtn.addEventListener('click', () => {
-    scale += 0.2;
-    yesBtn.style.transform = `scale(${scale})`;
-  });
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const catImg = document.querySelector("img");
 
-  // عند الضغط على الزر الآخر تظهر الرسالة
-  yesBtn.addEventListener('click', () => {
+const images = [
+    "37.jpg",
+    "38.jpg",
+    "39.jpg",
+    "40.jpg",
+    "tb.jpg",
+    "41.jpg",
+];
+
+const messages = [
+    "No 😌",
+    "Are you sure?",
+    "Really? achfay 3liha",
+    "Think again",
+    "Last chance 🔪",
+    "Fine..."
+];
+
+let clickCount = 0;
+/* 🔊 YES SOUND */
+const yesSound = new Audio("back.mp3");
+yesSound.preload = "auto";
+
+/* 🔊 NO SOUND */
+const noSound = new Audio("cool.mp3");
+noSound.preload = "auto";
+
+/* hearts */
+const heartInterval = setInterval(() => {
+
+    const heart = document.createElement("div");
+    heart.innerHTML = "❤️";
+    heart.style.position = "fixed";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.top = "-20px";
+    heart.style.fontSize = (18 + Math.random() * 18) + "px";
+    heart.style.animation = "fall 4s linear forwards";
+    heart.style.pointerEvents = "none";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+
+}, 700);
+
+/* NO */
+noBtn.addEventListener("click", () => {
+
+    noSound.currentTime = 0;
+    noSound.play().catch(() => {});
+
+    clickCount++;
+
+    yesBtn.style.transform = `scale(${Math.min(1 + clickCount * 0.15, 1.8)})`;
+
+    if(clickCount < messages.length){
+        noBtn.textContent = messages[clickCount];
+    }
+
+    const imgIndex = Math.min(clickCount, images.length - 1);
+    catImg.src = images[imgIndex];
+});
+
+/* YES */
+yesBtn.addEventListener("click", () => {
+
+    /* 🔥 FIX: STOP SOUND */
+    noSound.pause();
+    noSound.currentTime = 0;
+  yesSound.pause();
+yesSound.currentTime = 0;
+yesSound.play().catch(() => {});
+
+    clearInterval(heartInterval);
+
     document.body.innerHTML = `
-      <h1>تحيا الجزائر 🇩🇿🔥</h1>
-      <img src="tb.jpg" alt="Happy Cat">
+        <div style="
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+            text-align:center;
+            padding:20px;
+            color:white;
+            background:linear-gradient(135deg,#10182a,#1f2d4d);
+            font-family:'Poppins',sans-serif;
+        ">
+
+            <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,3rem);">
+    𝙎𝙝𝙚 𝙨𝙖𝙞𝙙 𝙔𝙀𝙎❤️
+</h1>
+
+            <p style="font-family:'Audiowide', sans-serif;font-size:1.2rem;margin:10px 0;">
+                𝔐𝔦𝔰𝔰𝔦𝔬𝔫 𝔞𝔠𝔠𝔬𝔪𝔭𝔩𝔦𝔰𝔥𝔢𝔡.
+            </p>
+
+            <video autoplay muted loop playsinline
+                style="
+                    width:90%;
+                    max-width:280px;
+                    border-radius:20px;
+                    box-shadow:0 10px 30px rgba(0,0,0,.3);
+                ">
+                <source src="yes.mp4" type="video/mp4">
+            </video>
+
+            <h1 style="opacity:0.9;margin-top:15px;">
+                𝙡𝙤𝙫𝙚 𝙮𝙤𝙪...
+            </h1>
+
+        
+        </div>
     `;
-    const audio = new Audio('تحيا.mp3');
-    audio.play();
-  });
+});
+
 </script>
 
 </body>
